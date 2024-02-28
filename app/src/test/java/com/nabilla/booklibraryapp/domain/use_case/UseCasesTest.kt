@@ -5,6 +5,7 @@ import com.nabilla.booklibraryapp.data.repository.FakeRepository
 import com.nabilla.booklibraryapp.domain.model.Book
 import org.junit.Before
 import org.junit.Test
+import com.nabilla.booklibraryapp.R
 
 class UseCasesTest {
 
@@ -13,6 +14,7 @@ class UseCasesTest {
     private lateinit var deleteBook: DeleteBook
     private lateinit var updateBook: UpdateBook
     private lateinit var fakeRepository: FakeRepository
+
     //var testBookList = mutableListOf<Book>()
 
     @Before
@@ -22,6 +24,7 @@ class UseCasesTest {
         addBook = AddBook(fakeRepository)
         deleteBook = DeleteBook(fakeRepository)
         updateBook = UpdateBook(fakeRepository)
+
         //testBookList = fakeRepository.myFakeBooks
     }
 
@@ -29,7 +32,7 @@ class UseCasesTest {
     @Test
     fun testAddBook(){
         val addBookItem = Book(
-            1,"Book 1","Author 1","Summary 1","Genre 1","English",0
+            1,"Book 1","Author 1","Summary 1","Genre 1","English",R.drawable.book6
         )
         addBook.invoke(addBookItem)
         assertThat(fakeRepository.myFakeBooks).contains(addBookItem)
