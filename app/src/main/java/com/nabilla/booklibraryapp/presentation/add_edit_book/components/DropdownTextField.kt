@@ -32,7 +32,10 @@ fun DropdownTextField(
 ) {
     var expanded by remember { mutableStateOf(false) }
 
-    Column {
+    Column (
+        modifier = Modifier
+            .fillMaxWidth()
+    ){
         OutlinedTextField(
             value = selectedOption,
             onValueChange = {},
@@ -44,8 +47,8 @@ fun DropdownTextField(
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowDown,
                         contentDescription = null,
-                        modifier = Modifier.size(40.dp),
-                        tint = Color.Blue
+                        modifier = Modifier.size(35.dp),
+                        tint = Color.Black
                     )
                 }
             },
@@ -59,6 +62,9 @@ fun DropdownTextField(
         )
 
         DropdownMenu(
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxWidth(),
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {

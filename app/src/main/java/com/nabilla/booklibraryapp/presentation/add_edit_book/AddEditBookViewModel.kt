@@ -69,6 +69,7 @@ class AddEditBookViewModel @Inject constructor(
         savedStateHandle.get<Int>("bookId")?.let { bookId ->
             Log.e(TAG, "bookId: $bookId")
             if(bookId != -1) {
+                /*
                 myBook = bookUseCases.getBook(bookId-1).also { book ->
                     currentBookId = book.id
                     _bookTitle.value = book.bookTitle
@@ -78,6 +79,17 @@ class AddEditBookViewModel @Inject constructor(
                     _bookLanguage.value = book.bookLanguage
                     _bookResId.value = book.bookResId
                 }
+                */
+
+                myBook = bookUseCases.getBook(bookId).also { book ->
+                    currentBookId = book!!.id
+                    _bookTitle.value = book.bookTitle
+                    _bookSummary.value = book.bookSummary
+                    _bookAuthor.value = book.bookAuthor
+                    _bookGenre.value = book.bookGenre
+                    _bookLanguage.value = book.bookLanguage
+                    _bookResId.value = book.bookResId
+                }!!
             }
         }
     }
@@ -119,7 +131,8 @@ class AddEditBookViewModel @Inject constructor(
                         bookLanguage.value,
                         bookResId.value
                         )
-                    updateBook(currentBookId-1,updateBook)
+                    //updateBook(currentBookId-1,updateBook)
+                    updateBook(currentBookId,updateBook)
                 }else{
                     addBook(Book(
                         bookSize.invoke().size+1,
@@ -128,8 +141,7 @@ class AddEditBookViewModel @Inject constructor(
                         bookSummary.value,
                         bookGenre.value,
                         bookLanguage.value,
-                        bookResId.value
-                    )
+                        bookResId.value)
                     )
                 }
             }

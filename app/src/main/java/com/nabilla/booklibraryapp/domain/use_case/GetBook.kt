@@ -7,7 +7,7 @@ import com.nabilla.booklibraryapp.domain.repository.BookRepository
  * A usecase class to retrieve a book object from repository
  */
 class GetBook(private val repository: BookRepository) {
-    operator fun invoke(id:Int):Book {
+    operator fun invoke(id:Int):Book? {
         return repository.getBook(id)
     }
 

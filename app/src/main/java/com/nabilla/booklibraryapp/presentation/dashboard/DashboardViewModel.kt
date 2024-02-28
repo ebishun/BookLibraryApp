@@ -55,6 +55,8 @@ class DashboardViewModel @Inject constructor(
 
                 }
             }
+
+            DashboardEvent.ClearQuery -> _searchTitle.value = ""
         }
     }
 
