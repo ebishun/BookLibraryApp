@@ -24,6 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
+/**
+ * A composable function containing dropdown textfield for genre
+ */
 @Composable
 fun DropdownTextField(
     options: List<String>,

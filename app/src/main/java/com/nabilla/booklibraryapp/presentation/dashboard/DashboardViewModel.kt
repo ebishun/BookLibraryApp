@@ -42,7 +42,6 @@ class DashboardViewModel @Inject constructor(
                     viewModelScope.launch {
                         _listOfBook.emit(getBooksByQuery(""))
                     }
-
                 }
             }
 

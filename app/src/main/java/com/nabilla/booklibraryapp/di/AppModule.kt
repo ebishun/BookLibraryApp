@@ -15,10 +15,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+/**
+ * Dependency injection
+ * Provides for Repository and UseCases classes are registered here
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
     @Provides
     @Singleton
     fun provideBookRepository():BookRepository{

@@ -58,12 +58,12 @@ class AddEditBookViewModel @Inject constructor(
     var _bookResId = mutableStateOf(R.drawable.book6)
     val bookResId =  _bookResId
 
-    private val _invalidInputMessage = MutableSharedFlow<String>()
-    val invalidInputMessage = _invalidInputMessage.asSharedFlow()
+    private val _myInputMessage = MutableSharedFlow<String>()
+    val myInputMessage = _myInputMessage.asSharedFlow()
 
     init {
         viewModelScope.launch {
-            _invalidInputMessage.emit("")
+            _myInputMessage.emit("")
         }
 
         savedStateHandle.get<Int>("bookId")?.let { bookId ->
@@ -105,19 +105,18 @@ class AddEditBookViewModel @Inject constructor(
             is AddEditBookEvent.DeleteBook -> {
                 if (currentBookId != -1){
                     deleteBook(myBook)
+                    updateMessage("Success: Book Deleted")
                 }else{
-                    viewModelScope.launch {
-                        _invalidInputMessage.emit("Book does not exist")
-                    }
+                    updateMessage("Error: Book does not exist")
                 }
             }
 
             is AddEditBookEvent.SaveBook -> {
-                if (bookTitle.value.isEmpty() || bookAuthor.value.isEmpty()){
-                    viewModelScope.launch {
-                        _invalidInputMessage.emit("Invalid input: Text field cannot be empty")
-                    }
-
+                if (bookTitle.value.isEmpty()){
+                    updateMessage("Invalid Input: Book Title cannot be empty")
+                    return
+                } else if(bookAuthor.value.isEmpty()){
+                    updateMessage("Invalid Input: Book Author cannot be empty")
                     return
                 }
 
@@ -133,6 +132,7 @@ class AddEditBookViewModel @Inject constructor(
                         )
                     //updateBook(currentBookId-1,updateBook)
                     updateBook(currentBookId,updateBook)
+                    updateMessage("Success: Updated")
                 }else{
                     addBook(Book(
                         bookSize.invoke().size+1,
@@ -143,6 +143,7 @@ class AddEditBookViewModel @Inject constructor(
                         bookLanguage.value,
                         bookResId.value)
                     )
+                    updateMessage("Success: Book added")
                 }
             }
         }
@@ -160,5 +161,9 @@ class AddEditBookViewModel @Inject constructor(
 
     private fun updateBook(id:Int, book: Book){
         bookUseCases.updateBook(id, book)
+    }
+
+    private fun updateMessage(strString: String)=viewModelScope.launch{
+        _myInputMessage.emit(strString)
     }
 }

@@ -6,14 +6,19 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -28,13 +33,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nabilla.booklibraryapp.presentation.add_edit_book.components.DropdownTextField
 import com.nabilla.booklibraryapp.ui.theme.DarkRed
 
+/**
+ * A composable function for AddEditBook screen to display/edit information of a book.
+ */
 @Composable
 fun AddEditBookScreen(
     navController: NavController,
@@ -48,20 +60,22 @@ fun AddEditBookScreen(
     val bookLanguage = viewModel.bookLanguage.value
     val bookSummary = viewModel.bookSummary.value
 
-    // Show toast message for invalid input
     val context = LocalContext.current
-    var isSubmitSuccess = true
+    //var isSubmitSuccess = true
+    //var isSubmitSuccess by remember { mutableStateOf(true) }
 
     val genres = listOf("Fiction", "Non-Fiction", "Historical Fiction", "Asian", "Biography","Comedy","Manga")
     var selectedGenre by remember { mutableStateOf(bookGenre) }
 
     LaunchedEffect(true) {
-        viewModel.invalidInputMessage.collect { message ->
-            isSubmitSuccess = if(message.isNotEmpty()) {
-                showToast(context,message)
-                false
-            }else{
-                true
+        viewModel.myInputMessage.collect { message ->
+            when{
+                message.contains("Success") -> {
+                    showToast(context,message)
+                    navController.popBackStack()
+                }
+                message.contains("Invalid") || message.contains("Error") -> showToast(context,message)
+                else -> {}
             }
         }
     }
@@ -71,7 +85,22 @@ fun AddEditBookScreen(
             modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
         ) {
+            Spacer(modifier = Modifier.width(20.dp))
+
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 20.dp, start = 10.dp, end = 10.dp, bottom = 10.dp),
+                style = TextStyle(textAlign = TextAlign.Center),
+                text = "BOOK INFORMATION",
+                color = colorScheme.primary,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+
             OutlinedTextField(
                 value = bookTitle,
                 onValueChange = {
@@ -92,7 +121,7 @@ fun AddEditBookScreen(
                 },
                 label = { Text("Author") },
                 maxLines = 1,
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 modifier = Modifier
                     .padding(10.dp)
                     .fillMaxWidth()
@@ -161,13 +190,16 @@ fun AddEditBookScreen(
                     containerColor = DarkRed
                 ),
                 onClick = {
+                    // Perform task
+                    // Navigate back to dashboard screen
                     viewModel.onEvent(AddEditBookEvent.DeleteBook)
+                    /*
                     if (isSubmitSuccess){
                         navController.popBackStack()
                     }
+                    */
                 }
             ) {
-
                 Text("Delete Book")
             }
 
@@ -176,15 +208,16 @@ fun AddEditBookScreen(
                     .padding(top = 5.dp, start = 10.dp, end = 10.dp)
                     .fillMaxWidth(),
                 onClick = {
-                // Perform task
-                // Navigate back to dashboard screen
+                    // Perform task
+                    // Navigate back to dashboard screen
                     viewModel.onEvent(AddEditBookEvent.SaveBook)
+                    /*
                     if (isSubmitSuccess){
                         navController.popBackStack()
                     }
+                    */
                 }
             ) {
-
                 Text("Save Book")
             }
         }

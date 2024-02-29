@@ -1,6 +1,7 @@
 package com.nabilla.booklibraryapp.presentation.dashboard.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -8,7 +9,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.nabilla.booklibraryapp.domain.model.Book
@@ -56,6 +59,7 @@ fun BookCard(
                     .fillMaxSize()
                     .padding(10.dp)
             ) {
+
                 Text(
                     text = book.bookTitle,
                     style = MaterialTheme.typography.titleMedium,
@@ -68,6 +72,7 @@ fun BookCard(
                     modifier = Modifier,
                     text = "by ${book.bookAuthor}",
                     style = MaterialTheme.typography.titleSmall,
+                    fontStyle = FontStyle.Italic,
                     color = MaterialTheme.colorScheme.onSurface,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -84,6 +89,7 @@ fun BookCard(
 
             }
         }
+
 
     }
 

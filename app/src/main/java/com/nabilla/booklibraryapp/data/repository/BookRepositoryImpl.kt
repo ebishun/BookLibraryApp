@@ -5,10 +5,23 @@ import com.nabilla.booklibraryapp.R
 import com.nabilla.booklibraryapp.domain.model.Book
 import com.nabilla.booklibraryapp.domain.repository.BookRepository
 
+/**
+ * Repository class implementation
+ * Book list is contained here
+ * Since no db, data source will be placed here
+ * Add, edit, delete book from list
+ */
 class BookRepositoryImpl():BookRepository {
 
     private val books = mutableListOf<Book>()
-    private var myId = 0
+    private var myId = 0            //myId works as auto-increment id like in db
+
+    /**
+     * Repository class implementation
+     * Book list is contained here
+     * Since no db, data source will be placed here
+     * Add, edit, delete book from list
+     */
     init {
         books.add(Book(1,"The Jakarta Method","Vincent Bevins","A 2020 political history book by American journalist and author Vincent Bevins. It concerns U.S. government support for and complicity in anti-communist mass killings around the world and their aggregate consequences from the Cold War until the present era.",
             "Non-Fiction","English", R.drawable.book1))
@@ -46,7 +59,7 @@ class BookRepositoryImpl():BookRepository {
 
     override fun updateBook(id:Int, book: Book) {
         //books[id] = book
-        val updateIdx = books.indexOfFirst { it.id == id }
+        val updateIdx = books.indexOfFirst { it.id == id }    //Get book index in the list containing said id
         books[updateIdx] = book
     }
 

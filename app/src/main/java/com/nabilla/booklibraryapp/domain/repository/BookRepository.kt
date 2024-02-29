@@ -2,8 +2,11 @@ package com.nabilla.booklibraryapp.domain.repository
 
 import com.nabilla.booklibraryapp.domain.model.Book
 
+/**
+ * Repository class interface
+ * UseCases class will interact with repository through here
+ */
 interface BookRepository {
-
     fun getBooks(): List<Book>
     fun getBook(id:Int): Book?
     fun insertBook(book: Book)
